@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NPS InsightX – Advanced Retirement Forecasting Platform</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/landing.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="index.html">
+      <div class="brand-icon">📊</div>
+      <span class="brand-text">NPS <span>InsightX</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active">🏠 Home</a></li>
+      <li><a href="dashboard.html">📈 Dashboard</a></li>
+      <li><a href="scenario.html">⚖️ Scenarios</a></li>
+      <li><a href="goal.html">🎯 Goal Planner</a></li>
+      <li><a href="risk.html">🛡️ Risk Sim</a></li>
+      <li><a href="insights.html">🤖 AI Insights</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-content fade-in">
+        <div class="hero-badge">🚀 AI-Powered Retirement Intelligence</div>
+        <h1 class="hero-title">
+          Plan Your Retirement<br />
+          with <span class="highlight">Precision & Confidence</span>
+        </h1>
+        <p class="hero-desc">
+          NPS InsightX leverages advanced forecasting models to simulate your retirement corpus,
+          stress-test market scenarios, and provide personalised pension intelligence — all in one platform.
+        </p>
+        <div class="hero-actions">
+          <a href="dashboard.html" class="btn btn-primary btn-lg">
+            🚀 Start Forecasting
+          </a>
+          <a href="#features" class="btn btn-secondary btn-lg">
+            📖 Learn More
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <div class="hero-stat-val">6</div>
+            <div class="hero-stat-label">Analytics Modules</div>
+          </div>
+          <div>
+            <div class="hero-stat-val">100+</div>
+            <div class="hero-stat-label">Scenarios Simulated</div>
+          </div>
+          <div>
+            <div class="hero-stat-val">Real-time</div>
+            <div class="hero-stat-label">Compound Projections</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual Card -->
+      <div class="hero-visual fade-in fade-in-delay">
+        <div class="hero-card">
+          <div class="hero-chart-placeholder">
+            <canvas id="heroChart"></canvas>
+          </div>
+          <div class="mini-kpis">
+            <div class="mini-kpi">
+              <div class="mini-kpi-val" id="heroCorpus">₹1.84 Cr</div>
+              <div class="mini-kpi-label">Projected Corpus</div>
+            </div>
+            <div class="mini-kpi">
+              <div class="mini-kpi-val green" id="heroPension">₹61,500</div>
+              <div class="mini-kpi-label">Monthly Pension</div>
+            </div>
+            <div class="mini-kpi">
+              <div class="mini-kpi-val yellow" id="heroScore">78</div>
+              <div class="mini-kpi-label">Health Score</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="features-inner">
+      <div class="section-header fade-in">
+        <div class="section-tag">Platform Features</div>
+        <h2 class="section-title">Everything You Need for Retirement Intelligence</h2>
+        <p class="section-subtitle">
+          Six powerful modules to forecast, simulate, compare and optimise your National Pension System contributions.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card fade-in">
+          <div class="feature-icon" style="background:rgba(0,180,216,0.12);color:var(--teal)">📈</div>
+          <h3 class="feature-title">Retirement Forecast Dashboard</h3>
+          <p class="feature-desc">
+            Input your age, monthly contribution, and expected return to get a detailed corpus projection
+            with compound interest calculations and inflation-adjusted real values.
+          </p>
+          <a href="dashboard.html" class="feature-link">Open Dashboard →</a>
+        </div>
+
+        <div class="feature-card fade-in fade-in-delay">
+          <div class="feature-icon" style="background:rgba(6,214,160,0.12);color:var(--accent)">⚖️</div>
+          <h3 class="feature-title">Scenario Comparison</h3>
+          <p class="feature-desc">
+            Compare your base plan against optimistic (+10% contribution) and delayed (+5 years) scenarios
+            to understand the real cost of procrastination.
+          </p>
+          <a href="scenario.html" class="feature-link">Compare Scenarios →</a>
+        </div>
+
+        <div class="feature-card fade-in fade-in-delay-2">
+          <div class="feature-icon" style="background:rgba(255,183,3,0.12);color:var(--accent-warn)">🎯</div>
+          <h3 class="feature-title">Goal-Based Planning</h3>
+          <p class="feature-desc">
+            Work backwards from your desired monthly pension to discover exactly how much you need to
+            contribute today. Get a feasibility indicator and actionable suggestions.
+          </p>
+          <a href="goal.html" class="feature-link">Plan Your Goals →</a>
+        </div>
+
+        <div class="feature-card fade-in">
+          <div class="feature-icon" style="background:rgba(239,35,60,0.12);color:var(--accent-danger)">🛡️</div>
+          <h3 class="feature-title">Risk Simulation</h3>
+          <p class="feature-desc">
+            Stress-test your retirement plan against market downturns, inflation spikes, and contribution
+            gaps to understand your risk exposure and resilience.
+          </p>
+          <a href="risk.html" class="feature-link">Simulate Risks →</a>
+        </div>
+
+        <div class="feature-card fade-in fade-in-delay">
+          <div class="feature-icon" style="background:rgba(0,180,216,0.12);color:var(--teal)">🤖</div>
+          <h3 class="feature-title">AI-Powered Insights</h3>
+          <p class="feature-desc">
+            Receive personalised AI recommendations to improve your retirement health score,
+            alerts for predicted shortfalls, and actionable wealth-building strategies.
+          </p>
+          <a href="insights.html" class="feature-link">Get AI Insights →</a>
+        </div>
+
+        <div class="feature-card fade-in fade-in-delay-2">
+          <div class="feature-icon" style="background:rgba(6,214,160,0.12);color:var(--accent)">📊</div>
+          <h3 class="feature-title">Visual Analytics</h3>
+          <p class="feature-desc">
+            Interactive Chart.js visualizations showing corpus growth trajectories, scenario comparisons,
+            risk impact assessments, and health score gauges with smooth animations.
+          </p>
+          <a href="dashboard.html" class="feature-link">View Charts →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works">
+    <div class="how-it-works-inner">
+      <div class="section-header fade-in">
+        <div class="section-tag">Getting Started</div>
+        <h2 class="section-title">How NPS InsightX Works</h2>
+        <p class="section-subtitle">Four simple steps to a comprehensive retirement intelligence report</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card fade-in">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Enter Your Profile</h3>
+          <p class="step-desc">Provide your current age, retirement target, monthly NPS contribution, and expected market return rate.</p>
+        </div>
+        <div class="step-card fade-in fade-in-delay">
+          <div class="step-number">2</div>
+          <h3 class="step-title">Run Projections</h3>
+          <p class="step-desc">Our compound interest engine calculates your nominal and inflation-adjusted corpus over time.</p>
+        </div>
+        <div class="step-card fade-in fade-in-delay-2">
+          <div class="step-number">3</div>
+          <h3 class="step-title">Simulate Scenarios</h3>
+          <p class="step-desc">Compare alternative contribution strategies and stress-test against market downturns and inflation spikes.</p>
+        </div>
+        <div class="step-card fade-in fade-in-delay-3">
+          <div class="step-number">4</div>
+          <h3 class="step-title">Get AI Insights</h3>
+          <p class="step-desc">Receive personalised recommendations to optimise your plan, improve your health score and achieve pension goals.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="cta-inner fade-in">
+      <h2 class="cta-title">Ready to Secure Your Retirement?</h2>
+      <p class="cta-desc">
+        Start with the Retirement Forecast Dashboard and discover your projected corpus,
+        monthly pension estimate, and retirement health score in seconds.
+      </p>
+      <a href="dashboard.html" class="btn btn-accent btn-lg">
+        🚀 Launch Forecast Dashboard
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2024 <strong>NPS InsightX</strong> — Advanced Retirement Forecasting &amp; Pension Intelligence Platform</p>
+    <p style="margin-top:0.5rem">
+      <a href="dashboard.html">Dashboard</a> ·
+      <a href="scenario.html">Scenarios</a> ·
+      <a href="goal.html">Goal Planner</a> ·
+      <a href="risk.html">Risk Sim</a> ·
+      <a href="insights.html">AI Insights</a>
+    </p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Hero chart demo
+    document.addEventListener('DOMContentLoaded', () => {
+      const ctx = document.getElementById('heroChart');
+      if (!ctx) return;
+      const labels = [];
+      const data = [];
+      for (let y = 1; y <= 25; y++) {
+        labels.push("Yr " + y);
+        const months = y * 12;
+        const r = 0.10 / 12;
+        data.push(Math.round(15000 * ((Math.pow(1 + r, months) - 1) / r) * (1 + r)));
+      }
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Corpus Growth',
+            data,
+            borderColor: '#00b4d8',
+            backgroundColor: 'rgba(0,180,216,0.08)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 0,
+          }]
+        },
+        options: {
+          ...getChartDefaults(),
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false },
+          },
+          scales: {
+            x: { display: false },
+            y: { display: false },
+          },
+          animation: { duration: 1500 },
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Goal-Based Planning – NPS InsightX</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="index.html">
+      <div class="brand-icon">📊</div>
+      <span class="brand-text">NPS <span>InsightX</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="dashboard.html">📈 Dashboard</a></li>
+      <li><a href="scenario.html">⚖️ Scenarios</a></li>
+      <li><a href="goal.html" class="active">🎯 Goal Planner</a></li>
+      <li><a href="risk.html">🛡️ Risk Sim</a></li>
+      <li><a href="insights.html">🤖 AI Insights</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="page-header">
+      <h1>🎯 Goal-Based Planning</h1>
+      <p>Work backwards from your desired pension to find the required monthly savings</p>
+    </div>
+
+    <div class="sidebar-layout">
+      <!-- Input Panel -->
+      <div>
+        <div class="panel fade-in">
+          <div class="panel-title">🎯 Set Your Pension Goal</div>
+          <div class="form-grid" style="grid-template-columns:1fr">
+            <div class="form-group">
+              <label>Desired Monthly Pension (₹)</label>
+              <input type="number" id="goalPension" value="75000" min="5000" step="1000" />
+              <span class="tooltip-text">Monthly pension you wish to receive post retirement (today's value)</span>
+            </div>
+            <div class="form-group">
+              <label>Current Age</label>
+              <input type="number" id="goalAge" value="30" min="18" max="65" />
+            </div>
+            <div class="form-group">
+              <label>Retirement Age</label>
+              <input type="number" id="goalRetAge" value="60" min="40" max="70" />
+            </div>
+            <div class="form-group">
+              <label>Annual Return: <span class="range-value" id="goalReturnLabel">10%</span></label>
+              <input type="range" id="goalReturn" min="4" max="20" value="10" step="0.5"
+                oninput="document.getElementById('goalReturnLabel').textContent = this.value + '%'" />
+            </div>
+            <div class="form-group">
+              <label>Inflation Rate: <span class="range-value" id="goalInflationLabel">6%</span></label>
+              <input type="range" id="goalInflation" min="2" max="12" value="6" step="0.5"
+                oninput="document.getElementById('goalInflationLabel').textContent = this.value + '%'" />
+            </div>
+            <div class="form-group">
+              <label>Current Monthly Contribution (₹) <span style="color:var(--teal)">(optional)</span></label>
+              <input type="number" id="goalCurrentContrib" value="15000" min="0" step="500" placeholder="0" />
+              <span class="tooltip-text">Enter your current NPS contribution to see feasibility gap</span>
+            </div>
+          </div>
+          <br />
+          <button class="btn btn-primary btn-full" onclick="runGoalPlanner()">
+            🎯 Calculate Required Savings
+          </button>
+        </div>
+      </div>
+
+      <!-- Results Area -->
+      <div>
+        <!-- KPI Cards -->
+        <div class="kpi-grid fade-in">
+          <div class="kpi-card">
+            <div class="kpi-icon teal">🏦</div>
+            <div class="kpi-value" id="goalRequiredContrib">--</div>
+            <div class="kpi-label">Required Monthly Contribution</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon green">💰</div>
+            <div class="kpi-value" id="goalTargetCorpus">--</div>
+            <div class="kpi-label">Target Real Corpus</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon yellow">📊</div>
+            <div class="kpi-value" id="goalGap">--</div>
+            <div class="kpi-label">Monthly Savings Gap</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon teal">⏳</div>
+            <div class="kpi-value" id="goalYears">--</div>
+            <div class="kpi-label">Years to Goal</div>
+          </div>
+        </div>
+
+        <!-- Feasibility Panel -->
+        <div class="panel fade-in" id="feasibilityPanel">
+          <div class="panel-title">📊 Feasibility Assessment</div>
+
+          <div id="feasibilityBanner" class="alert alert-info" style="margin-bottom:1.25rem">
+            <div class="alert-icon" id="feasBannerIcon">💡</div>
+            <div class="alert-body">
+              <h4 id="feasBannerTitle">Enter details to see feasibility</h4>
+              <p id="feasBannerText">Fill in your goal and click Calculate.</p>
+            </div>
+          </div>
+
+          <div class="indicator-bar">
+            <div class="indicator-label">Goal Achievement</div>
+            <div class="indicator-track">
+              <div class="indicator-fill teal" id="goalAchieveFill" style="width:0%"></div>
+            </div>
+            <div class="indicator-val" id="goalAchieveVal">0%</div>
+          </div>
+          <div class="indicator-bar">
+            <div class="indicator-label">Contribution Coverage</div>
+            <div class="indicator-track">
+              <div class="indicator-fill green" id="contribCovFill" style="width:0%"></div>
+            </div>
+            <div class="indicator-val" id="contribCovVal">0%</div>
+          </div>
+          <div class="indicator-bar">
+            <div class="indicator-label">Time Adequacy</div>
+            <div class="indicator-track">
+              <div class="indicator-fill yellow" id="timeAdequacyFill" style="width:0%"></div>
+            </div>
+            <div class="indicator-val" id="timeAdequacyVal">0%</div>
+          </div>
+
+          <hr class="divider" />
+
+          <div id="suggestions"></div>
+        </div>
+
+        <!-- Chart Panel -->
+        <div class="chart-panel fade-in">
+          <div class="chart-header">
+            <div class="chart-title">📈 Current vs Required Corpus Growth</div>
+          </div>
+          <div class="chart-container" style="height:280px">
+            <canvas id="goalChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/goal.js"></script>
+</body>
+</html>

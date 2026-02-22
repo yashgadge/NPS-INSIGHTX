@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Retirement Forecast Dashboard – NPS InsightX</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="index.html">
+      <div class="brand-icon">📊</div>
+      <span class="brand-text">NPS <span>InsightX</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="dashboard.html" class="active">📈 Dashboard</a></li>
+      <li><a href="scenario.html">⚖️ Scenarios</a></li>
+      <li><a href="goal.html">🎯 Goal Planner</a></li>
+      <li><a href="risk.html">🛡️ Risk Sim</a></li>
+      <li><a href="insights.html">🤖 AI Insights</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="page-header">
+      <h1>📈 Retirement Forecast Dashboard</h1>
+      <p>Compute your NPS corpus projection with compound interest and inflation adjustment</p>
+    </div>
+
+    <div class="sidebar-layout">
+      <!-- Input Panel -->
+      <div>
+        <div class="panel fade-in">
+          <div class="panel-title">⚙️ Forecast Parameters</div>
+          <div class="form-grid" style="grid-template-columns:1fr">
+
+            <div class="form-group">
+              <label>Current Age</label>
+              <input type="number" id="inputAge" value="30" min="18" max="65" />
+            </div>
+
+            <div class="form-group">
+              <label>Retirement Age</label>
+              <input type="number" id="inputRetirementAge" value="60" min="40" max="70" />
+            </div>
+
+            <div class="form-group">
+              <label>Monthly Contribution (₹)</label>
+              <input type="number" id="inputContrib" value="15000" min="500" step="500" />
+            </div>
+
+            <div class="form-group">
+              <label>Expected Annual Return: <span class="range-value" id="returnLabel">10%</span></label>
+              <input type="range" id="inputReturn" min="4" max="20" value="10" step="0.5" oninput="document.getElementById('returnLabel').textContent = this.value + '%'" />
+            </div>
+
+            <div class="form-group">
+              <label>Inflation Rate: <span class="range-value" id="inflationLabel">6%</span></label>
+              <input type="range" id="inputInflation" min="2" max="12" value="6" step="0.5" oninput="document.getElementById('inflationLabel').textContent = this.value + '%'" />
+            </div>
+
+          </div>
+          <br />
+          <button class="btn btn-primary btn-full" id="calcBtn" onclick="runForecast()">
+            🔮 Calculate Forecast
+          </button>
+        </div>
+
+        <!-- Gauge Panel -->
+        <div class="panel fade-in" id="gaugePanel">
+          <div class="panel-title">🏆 Retirement Health Score</div>
+          <div class="gauge-wrapper">
+            <div class="gauge-score" id="gaugeScore">--</div>
+            <div class="gauge-label">out of 100</div>
+            <div class="gauge-bar" style="width:100%;margin-top:0.5rem">
+              <div class="gauge-fill" id="gaugeFill" style="width:0%"></div>
+            </div>
+            <div id="scoreInterpretation" style="font-size:0.8rem;color:var(--text-secondary);text-align:center;margin-top:0.5rem">
+              Enter parameters and calculate to see your score.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Output Area -->
+      <div>
+        <!-- KPI Cards -->
+        <div class="kpi-grid fade-in" id="kpiSection">
+          <div class="kpi-card">
+            <div class="kpi-icon teal">💰</div>
+            <div class="kpi-value" id="kpiCorpus">--</div>
+            <div class="kpi-label">Nominal Corpus</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon green">📉</div>
+            <div class="kpi-value" id="kpiRealCorpus">--</div>
+            <div class="kpi-label">Inflation-Adjusted Corpus</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon yellow">🏦</div>
+            <div class="kpi-value" id="kpiPension">--</div>
+            <div class="kpi-label">Est. Monthly Pension</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon teal">⏳</div>
+            <div class="kpi-value" id="kpiYears">--</div>
+            <div class="kpi-label">Years to Retirement</div>
+          </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-panel fade-in">
+          <div class="chart-header">
+            <div class="chart-title">📊 Corpus Growth Projection</div>
+            <div>
+              <span class="tag tag-teal" id="nominalTag">Nominal</span>
+              <span class="tag tag-green" style="margin-left:4px" id="realTag">Real (Inflation-Adjusted)</span>
+            </div>
+          </div>
+          <div class="chart-container" style="height:320px">
+            <canvas id="corpusChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Year-by-Year Table -->
+        <div class="chart-panel fade-in" id="tableSection" style="display:none">
+          <div class="chart-header">
+            <div class="chart-title">📋 Year-by-Year Projection</div>
+            <span id="tableSubtitle" class="kpi-label"></span>
+          </div>
+          <div style="max-height:280px;overflow-y:auto">
+            <table class="data-table" id="projectionTable">
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th>Age</th>
+                  <th>Nominal Corpus</th>
+                  <th>Real Corpus</th>
+                  <th>Annual Contribution</th>
+                </tr>
+              </thead>
+              <tbody id="projectionBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
