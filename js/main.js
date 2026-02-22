@@ -64,7 +64,7 @@ function calculateCorpus(params) {
   const monthlyPension = (realCorpus * 0.04) / 12;
 
   // Retirement Health Score (0-100)
-  const healthScore = calculateHealthScore({ years, monthlyContrib, returnRate, inflationRate, realCorpus, monthlyPension });
+  const healthScore = calculateHealthScore({ years, monthlyContrib, returnRate, inflationRate, realCorpus });
 
   return {
     nominalCorpus,
@@ -108,7 +108,7 @@ function buildYearlyProjection(params) {
 /**
  * Calculate Retirement Health Score (0–100)
  */
-function calculateHealthScore({ years, monthlyContrib, returnRate, inflationRate, realCorpus, monthlyPension }) {
+function calculateHealthScore({ years, monthlyContrib, returnRate, inflationRate, realCorpus }) {
   let score = 0;
   // Time horizon (max 30 pts)
   score += Math.min(years / 35 * 30, 30);

@@ -271,10 +271,15 @@ function buildAllocationAdvice(riskAppetite, age, years) {
     aggressive: { E: 75, C: 15, G: 10, label: 'Aggressive', description: 'High equity for maximum long-term wealth creation.' },
   };
 
+  // Age-based life-cycle adjustment constants
+  const AGE_DERISK_THRESHOLD = 50;
+  const EQUITY_REDUCTION = 20;
+  const BOND_INCREASE = 10;
+
   // Age-based life-cycle adjustment
   let adj = allocations[riskAppetite];
-  if (age >= 50) {
-    adj = { E: Math.max(adj.E - 20, 10), C: adj.C + 10, G: adj.G + 10, label: adj.label + ' (Age-Adjusted)', description: adj.description + ' Reduced equity due to proximity to retirement.' };
+  if (age >= AGE_DERISK_THRESHOLD) {
+    adj = { E: Math.max(adj.E - EQUITY_REDUCTION, 10), C: adj.C + BOND_INCREASE, G: adj.G + BOND_INCREASE, label: adj.label + ' (Age-Adjusted)', description: adj.description + ' Reduced equity due to proximity to retirement.' };
   }
 
   el.innerHTML = `

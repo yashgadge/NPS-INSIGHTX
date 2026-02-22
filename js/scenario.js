@@ -2,6 +2,9 @@
  * NPS InsightX – Scenario Comparison Logic
  */
 
+const DELAY_YEARS = 5;
+const CONTRIB_BOOST = 1.1;
+
 let scenarioChart = null;
 
 function runScenarios() {
@@ -19,9 +22,9 @@ function runScenarios() {
   // Base Scenario
   const base = calculateCorpus({ age, retirementAge, monthlyContrib, returnRate, inflationRate });
   // +10% Contribution Scenario
-  const plus = calculateCorpus({ age, retirementAge, monthlyContrib: monthlyContrib * 1.1, returnRate, inflationRate });
+  const plus = calculateCorpus({ age, retirementAge, monthlyContrib: monthlyContrib * CONTRIB_BOOST, returnRate, inflationRate });
   // +5 Years Delay Scenario (start 5 years later, fewer years to invest)
-  const delayAge = age + 5;
+  const delayAge = age + DELAY_YEARS;
   const delay = delayAge < retirementAge
     ? calculateCorpus({ age: delayAge, retirementAge, monthlyContrib, returnRate, inflationRate })
     : null;
@@ -51,13 +54,13 @@ function runScenarios() {
 
   // Build projection data for chart
   const baseProj = buildYearlyProjection({ age, retirementAge, monthlyContrib, returnRate, inflationRate });
-  const plusProj = buildYearlyProjection({ age, retirementAge, monthlyContrib: monthlyContrib * 1.1, returnRate, inflationRate });
+  const plusProj = buildYearlyProjection({ age, retirementAge, monthlyContrib: monthlyContrib * CONTRIB_BOOST, returnRate, inflationRate });
 
   const maxYears = base.years;
   const labels = baseProj.map(p => 'Age ' + p.age);
 
-  // Delay projection padded with nulls for first 5 years
-  let delayProjectionReal = new Array(5).fill(null);
+  // Delay projection padded with nulls for first DELAY_YEARS years
+  let delayProjectionReal = new Array(DELAY_YEARS).fill(null);
   if (delay) {
     const dp = buildYearlyProjection({ age: delayAge, retirementAge, monthlyContrib, returnRate, inflationRate });
     delayProjectionReal = [...delayProjectionReal, ...dp.map(p => Math.round(p.real))];
