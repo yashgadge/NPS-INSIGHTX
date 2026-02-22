@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Risk Simulation – NPS InsightX</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="index.html">
+      <div class="brand-icon">📊</div>
+      <span class="brand-text">NPS <span>InsightX</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="dashboard.html">📈 Dashboard</a></li>
+      <li><a href="scenario.html">⚖️ Scenarios</a></li>
+      <li><a href="goal.html">🎯 Goal Planner</a></li>
+      <li><a href="risk.html" class="active">🛡️ Risk Sim</a></li>
+      <li><a href="insights.html">🤖 AI Insights</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="page-header">
+      <h1>🛡️ Risk Simulation</h1>
+      <p>Stress-test your retirement plan against market downturns, inflation spikes, and contribution gaps</p>
+    </div>
+
+    <div class="sidebar-layout">
+      <!-- Input Panel -->
+      <div>
+        <div class="panel fade-in">
+          <div class="panel-title">⚙️ Base Parameters</div>
+          <div class="form-grid" style="grid-template-columns:1fr">
+            <div class="form-group">
+              <label>Current Age</label>
+              <input type="number" id="riskAge" value="30" min="18" max="65" />
+            </div>
+            <div class="form-group">
+              <label>Retirement Age</label>
+              <input type="number" id="riskRetAge" value="60" min="40" max="70" />
+            </div>
+            <div class="form-group">
+              <label>Monthly Contribution (₹)</label>
+              <input type="number" id="riskContrib" value="15000" min="500" step="500" />
+            </div>
+            <div class="form-group">
+              <label>Annual Return: <span class="range-value" id="riskReturnLabel">10%</span></label>
+              <input type="range" id="riskReturn" min="4" max="20" value="10" step="0.5"
+                oninput="document.getElementById('riskReturnLabel').textContent = this.value + '%'" />
+            </div>
+            <div class="form-group">
+              <label>Inflation Rate: <span class="range-value" id="riskInflationLabel">6%</span></label>
+              <input type="range" id="riskInflation" min="2" max="12" value="6" step="0.5"
+                oninput="document.getElementById('riskInflationLabel').textContent = this.value + '%'" />
+            </div>
+          </div>
+          <br />
+          <button class="btn btn-primary btn-full" onclick="runRiskSimulation()">
+            🛡️ Run Risk Simulation
+          </button>
+        </div>
+
+        <!-- Risk Scenarios Config -->
+        <div class="panel fade-in">
+          <div class="panel-title">⚠️ Risk Scenarios</div>
+          <div class="form-group" style="margin-bottom:0.75rem">
+            <label>Market Downturn (Return Drop %): <span class="range-value" id="downturnLabel">-10%</span></label>
+            <input type="range" id="downturnPct" min="-30" max="-5" value="-10" step="1"
+              oninput="document.getElementById('downturnLabel').textContent = this.value + '%'" />
+          </div>
+          <div class="form-group" style="margin-bottom:0.75rem">
+            <label>Inflation Spike (+%): <span class="range-value" id="inflSpikeLabel">+3%</span></label>
+            <input type="range" id="inflSpike" min="1" max="8" value="3" step="0.5"
+              oninput="document.getElementById('inflSpikeLabel').textContent = '+' + this.value + '%'" />
+          </div>
+          <div class="form-group">
+            <label>Contribution Gap (years of no contribution): <span class="range-value" id="gapLabel">2</span></label>
+            <input type="range" id="contribGap" min="0" max="10" value="2" step="1"
+              oninput="document.getElementById('gapLabel').textContent = this.value" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Area -->
+      <div>
+        <!-- KPI Cards -->
+        <div class="kpi-grid fade-in">
+          <div class="kpi-card">
+            <div class="kpi-icon teal">✅</div>
+            <div class="kpi-value" id="riskBaseCorpus">--</div>
+            <div class="kpi-label">Base Corpus (Real)</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon red">📉</div>
+            <div class="kpi-value" id="riskDownturnCorpus">--</div>
+            <div class="kpi-label">After Market Downturn</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon yellow">🌡️</div>
+            <div class="kpi-value" id="riskInflationCorpus">--</div>
+            <div class="kpi-label">After Inflation Spike</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon red">⏸️</div>
+            <div class="kpi-value" id="riskGapCorpus">--</div>
+            <div class="kpi-label">After Contribution Gap</div>
+          </div>
+        </div>
+
+        <!-- Impact Chart -->
+        <div class="chart-panel fade-in">
+          <div class="chart-header">
+            <div class="chart-title">📊 Risk Impact on Corpus Growth</div>
+          </div>
+          <div class="chart-container" style="height:300px">
+            <canvas id="riskChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Risk Tolerance Panel -->
+        <div class="panel fade-in">
+          <div class="panel-title">🛡️ Risk Impact Assessment</div>
+
+          <div class="indicator-bar">
+            <div class="indicator-label">Market Downturn Impact</div>
+            <div class="indicator-track">
+              <div class="indicator-fill red" id="downturnImpactFill" style="width:0%"></div>
+            </div>
+            <div class="indicator-val" id="downturnImpactVal">0%</div>
+          </div>
+
+          <div class="indicator-bar">
+            <div class="indicator-label">Inflation Spike Impact</div>
+            <div class="indicator-track">
+              <div class="indicator-fill yellow" id="inflImpactFill" style="width:0%"></div>
+            </div>
+            <div class="indicator-val" id="inflImpactVal">0%</div>
+          </div>
+
+          <div class="indicator-bar">
+            <div class="indicator-label">Contribution Gap Impact</div>
+            <div class="indicator-track">
+              <div class="indicator-fill red" id="gapImpactFill" style="width:0%"></div>
+            </div>
+            <div class="indicator-val" id="gapImpactVal">0%</div>
+          </div>
+
+          <div class="indicator-bar">
+            <div class="indicator-label">Combined Worst Case</div>
+            <div class="indicator-track">
+              <div class="indicator-fill red" id="worstImpactFill" style="width:0%"></div>
+            </div>
+            <div class="indicator-val" id="worstImpactVal">0%</div>
+          </div>
+
+          <hr class="divider" />
+
+          <div class="panel-title" style="margin-bottom:0.75rem">⚖️ Risk Tolerance Meter</div>
+          <div id="riskToleranceIndicator" style="margin-bottom:1rem"></div>
+
+          <div id="riskAlerts"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/vendor/chart.umd.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/risk.js"></script>
+</body>
+</html>

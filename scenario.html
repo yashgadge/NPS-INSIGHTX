@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scenario Comparison – NPS InsightX</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="index.html">
+      <div class="brand-icon">📊</div>
+      <span class="brand-text">NPS <span>InsightX</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="dashboard.html">📈 Dashboard</a></li>
+      <li><a href="scenario.html" class="active">⚖️ Scenarios</a></li>
+      <li><a href="goal.html">🎯 Goal Planner</a></li>
+      <li><a href="risk.html">🛡️ Risk Sim</a></li>
+      <li><a href="insights.html">🤖 AI Insights</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="page-header">
+      <h1>⚖️ Scenario Comparison</h1>
+      <p>Compare your base plan against optimistic and delayed retirement strategies</p>
+    </div>
+
+    <div class="sidebar-layout">
+      <!-- Input Panel -->
+      <div>
+        <div class="panel fade-in">
+          <div class="panel-title">⚙️ Base Parameters</div>
+          <div class="form-grid" style="grid-template-columns:1fr">
+            <div class="form-group">
+              <label>Current Age</label>
+              <input type="number" id="scAge" value="30" min="18" max="65" />
+            </div>
+            <div class="form-group">
+              <label>Retirement Age</label>
+              <input type="number" id="scRetAge" value="60" min="40" max="70" />
+            </div>
+            <div class="form-group">
+              <label>Monthly Contribution (₹)</label>
+              <input type="number" id="scContrib" value="15000" min="500" step="500" />
+            </div>
+            <div class="form-group">
+              <label>Annual Return: <span class="range-value" id="scReturnLabel">10%</span></label>
+              <input type="range" id="scReturn" min="4" max="20" value="10" step="0.5"
+                oninput="document.getElementById('scReturnLabel').textContent = this.value + '%'" />
+            </div>
+            <div class="form-group">
+              <label>Inflation Rate: <span class="range-value" id="scInflationLabel">6%</span></label>
+              <input type="range" id="scInflation" min="2" max="12" value="6" step="0.5"
+                oninput="document.getElementById('scInflationLabel').textContent = this.value + '%'" />
+            </div>
+          </div>
+          <br />
+          <button class="btn btn-primary btn-full" onclick="runScenarios()">
+            ⚖️ Compare Scenarios
+          </button>
+        </div>
+
+        <!-- Scenario definitions info -->
+        <div class="panel fade-in">
+          <div class="panel-title">📖 Scenarios Explained</div>
+          <div class="alert alert-info" style="margin-bottom:0.75rem">
+            <div class="alert-icon">📊</div>
+            <div class="alert-body">
+              <h4>Base Scenario</h4>
+              <p>Your exact inputs — the starting point for comparison.</p>
+            </div>
+          </div>
+          <div class="alert alert-success" style="margin-bottom:0.75rem">
+            <div class="alert-icon">🚀</div>
+            <div class="alert-body">
+              <h4>+10% Contribution</h4>
+              <p>You increase monthly contributions by 10%. Small raise, big impact.</p>
+            </div>
+          </div>
+          <div class="alert alert-warning" style="margin-bottom:0">
+            <div class="alert-icon">⏳</div>
+            <div class="alert-body">
+              <h4>+5 Years Delay</h4>
+              <p>You start 5 years later. Demonstrates the cost of procrastination.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Area -->
+      <div>
+        <!-- Compare Cards -->
+        <div class="three-col fade-in" id="compareCards">
+          <div class="compare-card" id="baseCard">
+            <div class="scenario-name">📊 Base Scenario</div>
+            <div class="corpus-val" id="baseCorpus">--</div>
+            <div style="font-size:0.78rem;color:var(--text-secondary);margin-top:4px">Inflation-adjusted corpus</div>
+            <div style="font-size:0.82rem;color:var(--text-secondary);margin-top:8px">Monthly Pension</div>
+            <div style="font-size:1.1rem;font-weight:700;color:var(--teal)" id="basePension">--</div>
+            <div style="font-size:0.82rem;color:var(--text-secondary);margin-top:8px">Health Score</div>
+            <div style="font-size:1.1rem;font-weight:700;color:var(--accent-warn)" id="baseScore">--</div>
+          </div>
+          <div class="compare-card highlight" id="plusCard">
+            <div class="scenario-name">🚀 +10% Contribution</div>
+            <div class="corpus-val green" id="plusCorpus">--</div>
+            <div style="font-size:0.78rem;color:var(--text-secondary);margin-top:4px">Inflation-adjusted corpus</div>
+            <div style="font-size:0.82rem;color:var(--text-secondary);margin-top:8px">Monthly Pension</div>
+            <div style="font-size:1.1rem;font-weight:700;color:var(--accent)" id="plusPension">--</div>
+            <div style="font-size:0.82rem;color:var(--text-secondary);margin-top:8px">Improvement</div>
+            <div class="diff-badge" id="plusImprovement">--</div>
+          </div>
+          <div class="compare-card" id="delayCard">
+            <div class="scenario-name">⏳ +5 Years Delay</div>
+            <div class="corpus-val" style="color:var(--accent-danger)" id="delayCorpus">--</div>
+            <div style="font-size:0.78rem;color:var(--text-secondary);margin-top:4px">Inflation-adjusted corpus</div>
+            <div style="font-size:0.82rem;color:var(--text-secondary);margin-top:8px">Monthly Pension</div>
+            <div style="font-size:1.1rem;font-weight:700;color:var(--accent-danger)" id="delayPension">--</div>
+            <div style="font-size:0.82rem;color:var(--text-secondary);margin-top:8px">Loss vs Base</div>
+            <div class="diff-badge" style="background:rgba(239,35,60,0.12);color:var(--accent-danger)" id="delayLoss">--</div>
+          </div>
+        </div>
+
+        <!-- Side-by-Side Chart -->
+        <div class="chart-panel fade-in">
+          <div class="chart-header">
+            <div class="chart-title">📈 Corpus Growth – All Scenarios</div>
+          </div>
+          <div class="chart-container" style="height:320px">
+            <canvas id="scenarioChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Insight Box -->
+        <div class="panel fade-in" id="scenarioInsight" style="display:none">
+          <div class="panel-title">💡 Key Takeaways</div>
+          <div id="insightText"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/vendor/chart.umd.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/scenario.js"></script>
+</body>
+</html>
